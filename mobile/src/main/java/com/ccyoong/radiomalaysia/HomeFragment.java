@@ -19,9 +19,10 @@ import androidx.navigation.ui.NavigationUI;
  */
 public class HomeFragment extends Fragment {
 
-    Button nextButton;
+    private Button nextButton;
+    private Button playButton;
 
-    View rootView;
+    private View rootView;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -37,6 +38,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
         nextButton = rootView.findViewById(R.id.next_button);
+        playButton = rootView.findViewById(R.id.play_button);
 
         setHasOptionsMenu(true);
 
@@ -47,6 +49,20 @@ public class HomeFragment extends Fragment {
         super.onStart();
         nextButton.setOnClickListener(
                 Navigation.createNavigateOnClickListener(R.id.fullPlayListFragment));
+
+/*
+        playButton.setOnClickListener(
+                Navigation.createNavigateOnClickListener(R.id.playerFragment));
+*/
+
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Navigation.findNavController(view).navigate(HomeFragmentDirections.actionHomeFragmentToPlayerFragment("test station"));
+            }
+        });
+
     }
 
     @Override
@@ -60,4 +76,10 @@ public class HomeFragment extends Fragment {
          return NavigationUI.onNavDestinationSelected(item, Navigation.findNavController(rootView)) || super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        nextButton.setOnClickListener(null);
+        playButton.setOnClickListener(null);
+    }
 }

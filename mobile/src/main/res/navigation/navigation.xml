@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_fullPlayListFragment"
             app:destination="@id/fullPlayListFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
     </fragment>
     <fragment
         android:id="@+id/fullPlayListFragment"
@@ -24,4 +27,13 @@
         android:name="com.ccyoong.radiomalaysia.SupportFreeAppFragment"
         android:label="fragment_support_free_app"
         tools:layout="@layout/fragment_support_free_app" />
+    <fragment
+        android:id="@+id/playerFragment"
+        android:name="com.ccyoong.radiomalaysia.PlayerFragment"
+        android:label="fragment_player"
+        tools:layout="@layout/fragment_player" >
+        <argument
+            android:name="stationId"
+            app:argType="string" />
+    </fragment>
 </navigation>
