@@ -1,30 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <!--   <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-           android:id="@+id/media_view"
-           android:layout_width="355dp"
-           android:layout_height="614dp"
-           android:layout_marginStart="8dp"
-           android:layout_marginTop="8dp"
-           android:layout_marginEnd="8dp"
-           android:layout_marginBottom="8dp"
-           app:layout_constraintBottom_toBottomOf="parent"
-           app:layout_constraintEnd_toEndOf="parent"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toTopOf="parent" />-->
-
-    <fragment
-        android:id="@+id/mainNavHostFragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/navigation" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        tools:context=".main.MainActivity">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minHeight="?actionBarSize"
+                android:padding="@dimen/appbar_padding"
+                android:text="@string/app_name"
+                android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
+        <!--<com.google.android.exoplayer2.ui.PlayerView-->
+        <!--android:id="@+id/player_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="85dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!--app:layout_anchor="@+id/view_pager"-->
+        <!--app:layout_anchorGravity="bottom|center"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/imageView7"-->
+        <!--app:layout_constraintVertical_bias="1.0"-->
+        <!--app:show_buffering="when_playing"-->
+        <!--app:show_shuffle_button="true"-->
+        <!--app:surface_type="none"-->
+        <!--tools:layout_editor_absoluteX="-28dp">-->
+        <!--</com.google.android.exoplayer2.ui.PlayerView>-->
+
+        <com.google.android.exoplayer2.ui.PlayerControlView
+            android:id="@+id/player_control_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_anchor="@+id/view_pager"
+            app:layout_anchorGravity="bottom|center"
+            app:show_shuffle_button="false"
+            app:show_timeout="0" />
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

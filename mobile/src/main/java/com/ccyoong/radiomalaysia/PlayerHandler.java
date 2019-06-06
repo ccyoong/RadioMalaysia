@@ -8,25 +8,20 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 
-import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 
-public class PlayerHandler extends Player.DefaultEventListener {
+public class PlayerHandler implements Player.EventListener {
 
+    private static SimpleExoPlayer player = null;
     Context context;
-
     MediaSessionCompat session;
-    private SimpleExoPlayer player = null;
 
-
-    public PlayerHandler() {
+    private PlayerHandler() {
     }
 
     public PlayerHandler(Context context, MediaSessionCompat session) {
@@ -36,10 +31,9 @@ public class PlayerHandler extends Player.DefaultEventListener {
 
     public void createPlayer() {
         setPlaybackState(PlaybackStateCompat.STATE_STOPPED);
-        player = ExoPlayerFactory.newSimpleInstance(
-                new DefaultRenderersFactory(context),
-                new DefaultTrackSelector(),
-                new DefaultLoadControl());
+
+        player = ExoPlayerFactory.newSimpleInstance(context);
+
         player.addListener(this);
     }
 

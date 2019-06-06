@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import timber.log.Timber;
+
 public class StationController {
 
 
@@ -32,19 +34,25 @@ public class StationController {
 
     public static Station getNextStation(String id) {
         Station station = stationMap.get(id);
+        Timber.i(station.getName());
         int i = stations.indexOf(station);
+        Timber.i(i + "");
         if (++i == stations.size()) {
             i = 0;
         }
+        Timber.i(i + "");
         return stations.get(i);
     }
 
     public static Station getPreviousStation(String id) {
         Station station = stationMap.get(id);
+        Timber.i(station.getName());
         int i = stations.indexOf(station);
+        Timber.i(i + "");
         if (--i < 0) {
             i = stations.size() - 1;
         }
+        Timber.i(i + "");
         return stations.get(i);
     }
 }
