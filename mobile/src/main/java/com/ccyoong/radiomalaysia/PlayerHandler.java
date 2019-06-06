@@ -26,10 +26,10 @@ public class PlayerHandler extends Player.DefaultEventListener {
     private SimpleExoPlayer player = null;
 
 
-    private PlayerHandler() {
+    public PlayerHandler() {
     }
 
-    PlayerHandler(Context context, MediaSessionCompat session) {
+    public PlayerHandler(Context context, MediaSessionCompat session) {
         this.context = context;
         this.session = session;
     }
@@ -43,8 +43,8 @@ public class PlayerHandler extends Player.DefaultEventListener {
         player.addListener(this);
     }
 
-    public SimpleExoPlayer getPlayer(){
-        if(this.player==null){
+    public SimpleExoPlayer getPlayer() {
+        if (this.player == null) {
             createPlayer();
         }
         return this.player;

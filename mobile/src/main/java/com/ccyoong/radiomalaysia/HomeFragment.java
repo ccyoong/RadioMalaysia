@@ -9,15 +9,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
+
+import com.ccyoong.radiomalaysia.databinding.FragmentHomeBinding;
+
+import timber.log.Timber;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment {
+
+
+    private FragmentHomeBinding binding;
 
     private Button nextButton;
     private Button playButton;
@@ -31,19 +39,20 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Timber.i("onCreate Called");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        nextButton = rootView.findViewById(R.id.next_button);
-        playButton = rootView.findViewById(R.id.play_button);
-
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
+        rootView = binding.getRoot();
+        nextButton = binding.nextButton;
+        playButton = binding.playButton;
         setHasOptionsMenu(true);
-
         return rootView;
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -73,7 +82,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-         return NavigationUI.onNavDestinationSelected(item, Navigation.findNavController(rootView)) || super.onOptionsItemSelected(item);
+        return NavigationUI.onNavDestinationSelected(item, Navigation.findNavController(rootView)) || super.onOptionsItemSelected(item);
     }
 
     @Override

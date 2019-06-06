@@ -1,4 +1,4 @@
-package com.ccyoong.radiomalaysia;
+package com.ccyoong.radiomalaysia.auto;
 
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -18,8 +18,15 @@ import android.support.v4.media.session.MediaSessionCompat;
 import androidx.annotation.NonNull;
 import androidx.media.MediaBrowserServiceCompat;
 
+import com.ccyoong.radiomalaysia.PlayerHandler;
+import com.ccyoong.radiomalaysia.Station;
+import com.ccyoong.radiomalaysia.StationController;
+import com.ccyoong.radiomalaysia.common.PackageValidator;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * This class provides a MediaBrowser through a service. It exposes the media library to a browsing
@@ -103,8 +110,8 @@ public class MyMusicService extends MediaBrowserServiceCompat implements AudioMa
     private MediaSessionCompat mSession;
     private AudioManager audioManager;
     private AudioFocusRequest audioFocusRequest;
-
     private PlayerHandler playerHandler;
+    private String lastMediaId = "";
 
     private BroadcastReceiver connectedReceiver = new BroadcastReceiver() {
         @Override
@@ -145,6 +152,8 @@ public class MyMusicService extends MediaBrowserServiceCompat implements AudioMa
         registerReceiver(connectedReceiver, new IntentFilter("com.google.android.gms.car.media.STATUS"));
         registerReceiver(onAudioNoisyReceiver, new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY));
 
+        lastMediaId = "melody";
+        playerHandler.startPlaying(StationController.getStationById(lastMediaId));
     }
 
     @Override
@@ -159,6 +168,10 @@ public class MyMusicService extends MediaBrowserServiceCompat implements AudioMa
     public BrowserRoot onGetRoot(@NonNull String clientPackageName,
                                  int clientUid,
                                  Bundle rootHints) {
+        if (!PackageValidator.isCallerAllowed(this, clientPackageName, clientUid)) {
+            return null;
+        }
+
         Bundle extras = new Bundle();
         extras.putBoolean(CONTENT_STYLE_SUPPORTED, true);
         extras.putInt(CONTENT_STYLE_BROWSABLE_HINT, CONTENT_STYLE_GRID_ITEM_HINT_VALUE);
@@ -215,10 +228,20 @@ public class MyMusicService extends MediaBrowserServiceCompat implements AudioMa
         }
     }
 
+    @Override
+    public void onAudioFocusChange(int focusChange) {
+        switch (focusChange) {
+            case AudioManager.AUDIOFOCUS_GAIN:
+                playerHandler.continuePlaying();
+                break;
+
+            case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+                playerHandler.pausePlaying();
+                break;
+        }
+    }
 
     private final class MediaSessionCallback extends MediaSessionCompat.Callback {
-
-        String lastMediaId = "";
 
 
         private void play(Station station) {
@@ -282,18 +305,11 @@ public class MyMusicService extends MediaBrowserServiceCompat implements AudioMa
         public void onPlayFromSearch(final String query, final Bundle extras) {
             System.out.println("onPlayFromSearch");
         }
-    }
 
-    @Override
-    public void onAudioFocusChange(int focusChange) {
-        switch (focusChange) {
-            case AudioManager.AUDIOFOCUS_GAIN:
-                playerHandler.continuePlaying();
-                break;
+        @Override
+        public void onPrepare() {
 
-            case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
-                playerHandler.pausePlaying();
-                break;
+            Timber.i("onPrepare is called");
         }
     }
 }
