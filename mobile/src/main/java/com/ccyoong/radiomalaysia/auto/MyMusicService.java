@@ -151,9 +151,7 @@ public class MyMusicService extends MediaBrowserServiceCompat implements AudioMa
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         registerReceiver(connectedReceiver, new IntentFilter("com.google.android.gms.car.media.STATUS"));
         registerReceiver(onAudioNoisyReceiver, new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY));
-
-        lastMediaId = "melody";
-        playerHandler.startPlaying(StationController.getStationById(lastMediaId));
+        play(StationController.getStationById(lastMediaId));
     }
 
     @Override
@@ -241,16 +239,16 @@ public class MyMusicService extends MediaBrowserServiceCompat implements AudioMa
         }
     }
 
-    private final class MediaSessionCallback extends MediaSessionCompat.Callback {
 
-
-        private void play(Station station) {
-            if (getAudioFocus() == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-                mSession.setActive(true);
-                lastMediaId = station.getId();
-                playerHandler.startPlaying(station);
-            }
+    private void play(Station station) {
+        if (getAudioFocus() == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+            mSession.setActive(true);
+            lastMediaId = station.getId();
+            playerHandler.startPlaying(station);
         }
+    }
+
+    private final class MediaSessionCallback extends MediaSessionCompat.Callback {
 
 
         @Override

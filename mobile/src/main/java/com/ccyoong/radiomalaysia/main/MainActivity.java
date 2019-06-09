@@ -52,11 +52,6 @@ public class MainActivity extends AppCompatActivity {
 //        nc = Navigation.findNavController(this, R.id.mainNavHostFragment);
 //        NavigationUI.setupActionBarWithNavController(this, nc);
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
 
         mSession = new MediaSessionCompat(this, "MyMusicService");
         mSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS |
@@ -66,6 +61,11 @@ public class MainActivity extends AppCompatActivity {
         playerHandler = new PlayerHandler(this, mSession);
         playerControlView.setPlayer(playerHandler.getPlayer());
         playerHandler.startPlaying(StationController.getStationById(lastMediaId));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         nextButton.setEnabled(true);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
