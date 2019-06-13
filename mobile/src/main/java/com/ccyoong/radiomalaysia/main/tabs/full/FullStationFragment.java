@@ -8,9 +8,9 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
@@ -53,37 +53,78 @@ public class FullStationFragment extends Fragment {
 
         final List<Station> allStation = StationController.getStations();
 
-        LinearLayout ll = null;
-        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
-        float dp = 100f;
-        float fpixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, metrics);
-        int pixels = Math.round(fpixels);
-        LinearLayout.LayoutParams llimp = new LinearLayout.LayoutParams(pixels, pixels);
+        DisplayMetrics metrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        LinearLayout.LayoutParams outerLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1);
+        outerLayoutParams.setMargins(0, 5, 0, 5);
+
+        int itemHeight = (int) (metrics.heightPixels * 0.15);
+
+        LinearLayout.LayoutParams iconLayoutParams = new LinearLayout.LayoutParams((int) (metrics.widthPixels * 0.25), itemHeight, 3);
+
+        LinearLayout.LayoutParams infoLayoutParams = new LinearLayout.LayoutParams(metrics.widthPixels - (int) (metrics.widthPixels * 0.15), itemHeight, 7);
 
         for (int i = 0; i < allStation.size(); i++) {
-            if (i % 4 == 0) {
-                ll = new LinearLayout(getContext());
-                ll.setOrientation(LinearLayout.HORIZONTAL);
-                ll.setLayoutParams(llp);
-                mainLinearLayout.addView(ll);
-            }
-            ImageButton imageButton = new ImageButton(getContext());
-            Drawable img = getResources().getDrawable(getResources().getIdentifier("_" + allStation.get(i).getId(), "drawable", getContext().getPackageName()));
-            imageButton.setImageDrawable(img);
-            imageButton.setLayoutParams(llimp);
-            imageButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            imageButton.setId(i);
-            imageButton.setOnClickListener(new View.OnClickListener() {
+
+            // Outer Linear Layout
+            LinearLayout outerLayout = new LinearLayout(getContext());
+            outerLayout.setOrientation(LinearLayout.HORIZONTAL);
+            outerLayout.setLayoutParams(outerLayoutParams);
+            outerLayout.setClickable(true);
+            outerLayout.setId(i);
+            outerLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     MainActivity mainActivity = (MainActivity) getActivity();
                     mainActivity.play(allStation.get(view.getId()));
+
                 }
             });
-            ll.addView(imageButton);
-        }
+            /*outerLayout.setOnTouchListener(new View.OnTouchListener() {
 
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN: {
+                            v.getBackground().setColorFilter(0xe0f47521, PorterDuff.Mode.SRC_ATOP);
+                            v.invalidate();
+                            break;
+                        }
+                        case MotionEvent.ACTION_UP: {
+                            v.getBackground().clearColorFilter();
+                            v.invalidate();
+                            break;
+                        }
+                    }
+                    return false;
+                }
+
+            });*/
+            mainLinearLayout.addView(outerLayout);
+
+            // Station Icon
+            Drawable img = getResources().getDrawable(getResources().getIdentifier("_" + allStation.get(i).getId(), "drawable", getContext().getPackageName()));
+            ImageView icon = new ImageView(getContext());
+            icon.setImageDrawable(img);
+            icon.setLayoutParams(iconLayoutParams);
+            icon.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
+            outerLayout.addView(icon);
+
+            // Linear Layout to put info
+            LinearLayout infoLayout = new LinearLayout(getContext());
+            infoLayout.setOrientation(LinearLayout.VERTICAL);
+            infoLayout.setLayoutParams(infoLayoutParams);
+            outerLayout.addView(infoLayout);
+
+            // Station Title
+            TextView stationTitle = new TextView(getContext());
+            stationTitle.setText(allStation.get(i).getName());
+            stationTitle.setPadding(30, 10, 10, 10);
+            stationTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
+            infoLayout.addView(stationTitle);
+        }
 
     }
 }

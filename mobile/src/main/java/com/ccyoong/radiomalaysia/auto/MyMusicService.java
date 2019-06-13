@@ -111,7 +111,7 @@ public class MyMusicService extends MediaBrowserServiceCompat implements AudioMa
     private AudioManager audioManager;
     private AudioFocusRequest audioFocusRequest;
     private PlayerHandler playerHandler;
-    private String lastMediaId = "";
+    private String lastMediaId = "melody";
 
     private BroadcastReceiver connectedReceiver = new BroadcastReceiver() {
         @Override
