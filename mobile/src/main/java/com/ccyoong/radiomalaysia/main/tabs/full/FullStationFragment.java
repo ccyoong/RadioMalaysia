@@ -57,7 +57,7 @@ public class FullStationFragment extends Fragment {
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
         LinearLayout.LayoutParams outerLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1);
-        outerLayoutParams.setMargins(0, 5, 0, 5);
+        outerLayoutParams.setMargins(10, 5, 0, 5);
 
         int itemHeight = (int) (metrics.heightPixels * 0.15);
 
@@ -72,6 +72,10 @@ public class FullStationFragment extends Fragment {
             outerLayout.setOrientation(LinearLayout.HORIZONTAL);
             outerLayout.setLayoutParams(outerLayoutParams);
             outerLayout.setClickable(true);
+            outerLayout.setFocusable(true);
+            TypedValue outValue = new TypedValue();
+            getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
+            outerLayout.setBackgroundResource(outValue.resourceId);
             outerLayout.setId(i);
             outerLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -81,26 +85,6 @@ public class FullStationFragment extends Fragment {
 
                 }
             });
-            /*outerLayout.setOnTouchListener(new View.OnTouchListener() {
-
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN: {
-                            v.getBackground().setColorFilter(0xe0f47521, PorterDuff.Mode.SRC_ATOP);
-                            v.invalidate();
-                            break;
-                        }
-                        case MotionEvent.ACTION_UP: {
-                            v.getBackground().clearColorFilter();
-                            v.invalidate();
-                            break;
-                        }
-                    }
-                    return false;
-                }
-
-            });*/
             mainLinearLayout.addView(outerLayout);
 
             // Station Icon
@@ -124,7 +108,27 @@ public class FullStationFragment extends Fragment {
             stationTitle.setPadding(30, 10, 10, 10);
             stationTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
             infoLayout.addView(stationTitle);
+
+            // Station Details
+            TextView stationDtl = new TextView(getContext());
+            stationDtl.setText(allStation.get(i).getSlogan());
+            stationDtl.setPadding(30, 10, 10, 10);
+            stationDtl.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            infoLayout.addView(stationDtl);
+
+
         }
+
+        // add blank for the scrolling
+
+        LinearLayout.LayoutParams blankLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, itemHeight, 1);
+        blankLayoutParams.setMargins(10, 5, 0, 5);
+
+
+        LinearLayout blankLayout = new LinearLayout(getContext());
+        blankLayout.setOrientation(LinearLayout.HORIZONTAL);
+        blankLayout.setLayoutParams(blankLayoutParams);
+        mainLinearLayout.addView(blankLayout);
 
     }
 }

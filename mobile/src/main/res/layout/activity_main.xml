@@ -60,7 +60,5 @@
             app:layout_anchorGravity="bottom|center"
             app:show_shuffle_button="false"
             app:show_timeout="0" />
-
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
