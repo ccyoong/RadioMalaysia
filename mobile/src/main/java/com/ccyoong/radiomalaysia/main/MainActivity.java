@@ -1,12 +1,15 @@
 package com.ccyoong.radiomalaysia.main;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.ccyoong.radiomalaysia.PlayerHandler;
@@ -28,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton prevButton;
     private String lastMediaId = "melody";
 
+    private ImageView exoIcon;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         nextButton = findViewById(R.id.cuz_exo_next);
         prevButton = findViewById(R.id.cuz_exo_prev);
+        exoIcon = findViewById(R.id.cuz_exo_icon);
 
         TabsPagerAdapter tabsPagerAdapter = new TabsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.view_pager);
@@ -60,7 +66,15 @@ public class MainActivity extends AppCompatActivity {
         mSession.setActive(true);
         playerHandler = new PlayerHandler(this, mSession);
         playerControlView.setPlayer(playerHandler.getPlayer());
-        playerHandler.startPlaying(StationController.getStationById(lastMediaId));
+        play(StationController.getStationById(lastMediaId));
+    }
+
+    private void changeExoIcon(String mediaId) {
+        Drawable icon = getResources().getDrawable(getResources().getIdentifier("_" + mediaId, "drawable", getPackageName()));
+        exoIcon.setImageDrawable(icon);
+
+        Fragment fullStationFragment = getSupportFragmentManager().findFragmentById(R.id.fullPlayListFragment);
+ 
     }
 
     @Override
@@ -70,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 play(StationController.getNextStation(lastMediaId));
             }
         });
@@ -86,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         mSession.setActive(true);
         lastMediaId = station.getId();
         playerHandler.startPlaying(station);
+        changeExoIcon(lastMediaId);
     }
 
     @Override

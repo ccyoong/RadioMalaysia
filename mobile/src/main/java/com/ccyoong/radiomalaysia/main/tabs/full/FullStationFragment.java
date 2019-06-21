@@ -26,7 +26,10 @@ import java.util.List;
  */
 public class FullStationFragment extends Fragment {
 
-    LinearLayout mainLinearLayout;
+    private LinearLayout mainLinearLayout;
+
+    private ImageView exoIcon;
+
 
     public FullStationFragment() {
         // Required empty public constructor
@@ -37,8 +40,8 @@ public class FullStationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_full_station, container, false);
-
         mainLinearLayout = rootView.findViewById(R.id.mainLinearLayout);
+        exoIcon = getActivity().findViewById(R.id.cuz_exo_icon);
         constructLayout();
         return rootView;
     }
@@ -72,19 +75,25 @@ public class FullStationFragment extends Fragment {
             outerLayout.setOrientation(LinearLayout.HORIZONTAL);
             outerLayout.setLayoutParams(outerLayoutParams);
             outerLayout.setClickable(true);
-            outerLayout.setFocusable(true);
+            outerLayout.setFocusableInTouchMode(true);
             TypedValue outValue = new TypedValue();
             getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
             outerLayout.setBackgroundResource(outValue.resourceId);
             outerLayout.setId(i);
-            outerLayout.setOnClickListener(new View.OnClickListener() {
+            outerLayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
-                public void onClick(View view) {
-                    MainActivity mainActivity = (MainActivity) getActivity();
-                    mainActivity.play(allStation.get(view.getId()));
-
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus) {
+                        v.setBackgroundColor(0xFF7947FF);
+                        Station selectedStation = allStation.get(v.getId());
+                        MainActivity mainActivity = (MainActivity) getActivity();
+                        mainActivity.play(selectedStation);
+                    } else {
+                        v.setBackgroundColor(0);
+                    }
                 }
             });
+
             mainLinearLayout.addView(outerLayout);
 
             // Station Icon

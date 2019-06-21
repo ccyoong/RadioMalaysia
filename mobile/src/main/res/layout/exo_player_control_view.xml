@@ -4,12 +4,13 @@
     android:background="#CC000000"
     android:orientation="horizontal">
 
+
     <ImageButton
         android:id="@+id/cuz_exo_prev"
         style="@style/ExoMediaButton.Previous"
         android:layout_width="100dp"
         android:layout_height="80dp"
-        android:layout_weight="33"
+        android:layout_weight="1"
         android:background="#CC000000" />
 
     <ImageButton
@@ -17,7 +18,7 @@
         style="@style/ExoMediaButton.Pause"
         android:layout_width="100dp"
         android:layout_height="80dp"
-        android:layout_weight="33"
+        android:layout_weight="1"
         android:background="#CC000000" />
 
     <ImageButton
@@ -25,7 +26,7 @@
         style="@style/ExoMediaButton.Play"
         android:layout_width="100dp"
         android:layout_height="80dp"
-        android:layout_weight="33"
+        android:layout_weight="1"
         android:background="#CC000000" />
 
     <ImageButton
@@ -33,7 +34,13 @@
         style="@style/ExoMediaButton.Next"
         android:layout_width="100dp"
         android:layout_height="80dp"
-        android:layout_weight="33"
+        android:layout_weight="1"
         android:background="#CC000000" />
+
+    <ImageView
+        android:id="@+id/cuz_exo_icon"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:layout_weight="1" />
 
 </LinearLayout>
