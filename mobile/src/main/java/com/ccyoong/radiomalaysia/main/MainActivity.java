@@ -9,13 +9,12 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.ccyoong.radiomalaysia.PlayerHandler;
 import com.ccyoong.radiomalaysia.R;
-import com.ccyoong.radiomalaysia.Station;
 import com.ccyoong.radiomalaysia.StationController;
+import com.ccyoong.radiomalaysia.data.Station;
 import com.ccyoong.radiomalaysia.main.tabs.TabsPagerAdapter;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.material.tabs.TabLayout;
@@ -73,8 +72,6 @@ public class MainActivity extends AppCompatActivity {
         Drawable icon = getResources().getDrawable(getResources().getIdentifier("_" + mediaId, "drawable", getPackageName()));
         exoIcon.setImageDrawable(icon);
 
-        Fragment fullStationFragment = getSupportFragmentManager().findFragmentById(R.id.fullPlayListFragment);
- 
     }
 
     @Override

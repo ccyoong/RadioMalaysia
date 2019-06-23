@@ -1,7 +1,13 @@
 package com.ccyoong.radiomalaysia;
 
+import com.ccyoong.radiomalaysia.application.MyApplication;
+import com.ccyoong.radiomalaysia.data.FavStation;
+import com.ccyoong.radiomalaysia.data.Station;
+import com.ccyoong.radiomalaysia.database.RadioMalaysiaDatabase;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -12,8 +18,10 @@ public class StationController {
 
     private static Map<String, Station> stationMap = new HashMap<>();
     private static List<Station> stations = new ArrayList<>();
+    private static List<FavStation> favStations;
 
     static {
+
         stations.add(new Station("988", "988", "友声有色", "https://starrfm.rastream.com/starrfm-988"));
         stations.add(new Station("melody", "Melody", "心聆听, 新体会", "https://astro3.rastream.com/melody"));
         stations.add(new Station("myfm", "My Fm", "MY 好玩!", "https://astro1.rastream.com/myfm"));
@@ -36,6 +44,51 @@ public class StationController {
     public static List<Station> getStations() {
         return stations;
     }
+
+    public static List<FavStation> getFavStations() {
+        if (favStations == null) {
+            favStations = RadioMalaysiaDatabase.getInstance(MyApplication.getAppContext()).favStationDao().findAll();
+        }
+        return favStations;
+    }
+
+    public static boolean isFavStations(String id) {
+        boolean isFav = false;
+        favStations = getFavStations();
+
+        for (FavStation favStation : favStations) {
+            if (favStation.getStationId().equals(id)) {
+                isFav = true;
+                break;
+            }
+        }
+        return isFav;
+    }
+
+    public static void addFavStation(String id) {
+        FavStation newFav = new FavStation();
+        newFav.setStationId(id);
+        RadioMalaysiaDatabase.getInstance(MyApplication.getAppContext()).favStationDao().insert(newFav);
+        favStations.add(newFav);
+    }
+
+    public static void deleteFavStations(String id) {
+
+        List<FavStation> favStationList = RadioMalaysiaDatabase.getInstance(MyApplication.getAppContext()).favStationDao().findByStationId(id);
+        if (favStationList != null && favStationList.size() > 0) {
+            for (FavStation fav : favStationList) {
+                RadioMalaysiaDatabase.getInstance(MyApplication.getAppContext()).favStationDao().delete(fav);
+                Iterator<FavStation> itr = favStations.iterator();
+                while (itr.hasNext()) {
+                    FavStation favStation = itr.next();
+                    if (favStation.getStationId().equals(id)) {
+                        itr.remove();
+                    }
+                }
+            }
+        }
+    }
+
 
     public static Station getNextStation(String id) {
         Station station = stationMap.get(id);

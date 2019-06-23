@@ -19,9 +19,9 @@ import androidx.annotation.NonNull;
 import androidx.media.MediaBrowserServiceCompat;
 
 import com.ccyoong.radiomalaysia.PlayerHandler;
-import com.ccyoong.radiomalaysia.Station;
 import com.ccyoong.radiomalaysia.StationController;
 import com.ccyoong.radiomalaysia.common.PackageValidator;
+import com.ccyoong.radiomalaysia.data.Station;
 
 import java.util.ArrayList;
 import java.util.List;

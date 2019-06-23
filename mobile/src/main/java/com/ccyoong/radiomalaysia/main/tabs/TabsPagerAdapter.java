@@ -11,7 +11,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.ccyoong.radiomalaysia.R;
 import com.ccyoong.radiomalaysia.main.tabs.favourite.FavouriteFragment;
 import com.ccyoong.radiomalaysia.main.tabs.full.FullStationFragment;
-import com.ccyoong.radiomalaysia.main.tabs.recent.RecentFragment;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -20,8 +19,10 @@ import com.ccyoong.radiomalaysia.main.tabs.recent.RecentFragment;
 public class TabsPagerAdapter extends FragmentPagerAdapter {
 
     @StringRes
-    private static final int[] TAB_TITLES = new int[]{R.string.all, R.string.favourite, R.string.recent};
+    private static final int[] TAB_TITLES = new int[]{R.string.all, R.string.favourite};
     private final Context mContext;
+
+//    private Map<Integer, Fragment> pages = new HashMap<>();
 
     public TabsPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
@@ -34,7 +35,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
         // Return a PlaceholderFragment (defined as a static inner class below).
 
         Fragment frag = null;
-
+//        if (pages.get(position) == null) {
         switch (position) {
             case 0:
                 frag = new FullStationFragment();
@@ -42,11 +43,12 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 frag = new FavouriteFragment();
                 break;
-            case 2:
-                frag = new RecentFragment();
-                break;
-        }
 
+        }
+//            pages.put(position, frag);
+//        } else {
+//            frag = pages.get(position);
+//        }
         return frag;
     }
 
@@ -60,4 +62,6 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return TAB_TITLES.length;
     }
+
+
 }

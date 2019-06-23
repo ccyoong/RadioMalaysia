@@ -56,8 +56,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        nextButton.setOnClickListener(
-                Navigation.createNavigateOnClickListener(R.id.fullPlayListFragment));
+//        nextButton.setOnClickListener(
+//                Navigation.createNavigateOnClickListener(R.id.fullPlayListFragment));
 
 /*
         playButton.setOnClickListener(

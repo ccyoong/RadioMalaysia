@@ -8,6 +8,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,8 +16,8 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.ccyoong.radiomalaysia.R;
-import com.ccyoong.radiomalaysia.Station;
 import com.ccyoong.radiomalaysia.StationController;
+import com.ccyoong.radiomalaysia.data.Station;
 import com.ccyoong.radiomalaysia.main.MainActivity;
 
 import java.util.List;
@@ -29,7 +30,6 @@ public class FullStationFragment extends Fragment {
     private LinearLayout mainLinearLayout;
 
     private ImageView exoIcon;
-
 
     public FullStationFragment() {
         // Required empty public constructor
@@ -125,6 +125,31 @@ public class FullStationFragment extends Fragment {
             stationDtl.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             infoLayout.addView(stationDtl);
 
+
+            // fav icon
+            ImageButton favIcon = new ImageButton(getContext());
+            if (StationController.isFavStations(allStation.get(i).getId())) {
+                favIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_yellow_24dp, getContext().getTheme()));
+            } else {
+                favIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_border_black_24dp, getContext().getTheme()));
+            }
+
+            favIcon.setId(i);
+            favIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (StationController.isFavStations(allStation.get(view.getId()).getId())) {
+                        ((ImageButton) view).setImageDrawable(getResources().getDrawable(R.drawable.ic_star_border_black_24dp, getContext().getTheme()));
+                        StationController.deleteFavStations(allStation.get(view.getId()).getId());
+
+                    } else {
+                        ((ImageButton) view).setImageDrawable(getResources().getDrawable(R.drawable.ic_star_yellow_24dp, getContext().getTheme()));
+                        StationController.addFavStation(allStation.get(view.getId()).getId());
+                    }
+                }
+            });
+
+            outerLayout.addView(favIcon);
 
         }
 

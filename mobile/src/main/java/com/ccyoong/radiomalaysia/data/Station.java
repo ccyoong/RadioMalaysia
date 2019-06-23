@@ -1,10 +1,17 @@
-package com.ccyoong.radiomalaysia;
+package com.ccyoong.radiomalaysia.data;
+
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
+@Entity(tableName = "STATION")
 public class Station implements Serializable {
 
 
+    private static final long serialVersionUID = -4412754475975967833L;
+
+    @PrimaryKey
     private String id;
 
     private String name;
