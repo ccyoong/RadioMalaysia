@@ -14,7 +14,7 @@
         android:background="#CC000000" />
 
     <ImageButton
-        android:id="@id/exo_pause"
+        android:id="@+id/cuz_exo_pause"
         style="@style/ExoMediaButton.Pause"
         android:layout_width="100dp"
         android:layout_height="80dp"
@@ -22,7 +22,7 @@
         android:background="#CC000000" />
 
     <ImageButton
-        android:id="@id/exo_play"
+        android:id="@+id/cuz_exo_play"
         style="@style/ExoMediaButton.Play"
         android:layout_width="100dp"
         android:layout_height="80dp"

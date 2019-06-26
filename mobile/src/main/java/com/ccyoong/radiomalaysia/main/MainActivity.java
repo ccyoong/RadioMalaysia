@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.ccyoong.radiomalaysia.PlayerHandler;
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private PlayerControlView playerControlView;
     private ImageButton nextButton;
     private ImageButton prevButton;
+    private ImageButton playButton;
+    private ImageButton pauseButton;
     private String lastMediaId = "melody";
 
     private ImageView exoIcon;
@@ -40,13 +43,28 @@ public class MainActivity extends AppCompatActivity {
 
         nextButton = findViewById(R.id.cuz_exo_next);
         prevButton = findViewById(R.id.cuz_exo_prev);
+        playButton = findViewById(R.id.cuz_exo_play);
+        playButton.setVisibility(View.GONE);
+        pauseButton = findViewById(R.id.cuz_exo_pause);
         exoIcon = findViewById(R.id.cuz_exo_icon);
 
         TabsPagerAdapter tabsPagerAdapter = new TabsPagerAdapter(this, getSupportFragmentManager());
-        ViewPager viewPager = findViewById(R.id.view_pager);
+        final ViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(tabsPagerAdapter);
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
+
+        tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                super.onTabSelected(tab);
+                if (viewPager.getCurrentItem() == 1) {
+                    Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + viewPager.getCurrentItem());
+                    getSupportFragmentManager().beginTransaction().detach(page).attach(page).commit();
+                }
+
+            }
+        });
 
 
         playerControlView = findViewById(R.id.player_control_view);
@@ -66,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         playerHandler = new PlayerHandler(this, mSession);
         playerControlView.setPlayer(playerHandler.getPlayer());
         play(StationController.getStationById(lastMediaId));
+
     }
 
     private void changeExoIcon(String mediaId) {
@@ -77,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        nextButton.setEnabled(true);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,6 +106,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 play(StationController.getPreviousStation(lastMediaId));
+            }
+        });
+
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                play(StationController.getStationById(lastMediaId));
+                pauseButton.setVisibility(View.VISIBLE);
+                playButton.setVisibility(View.GONE);
+            }
+        });
+
+        pauseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                playerHandler.pausePlaying();
+                playButton.setVisibility(View.VISIBLE);
+                pauseButton.setVisibility(View.GONE);
             }
         });
     }
@@ -105,6 +141,8 @@ public class MainActivity extends AppCompatActivity {
         mSession.release();
         nextButton.setOnClickListener(null);
         prevButton.setOnClickListener(null);
+        playButton.setOnClickListener(null);
+        pauseButton.setOnClickListener(null);
     }
 
     @Override
