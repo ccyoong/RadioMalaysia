@@ -35,6 +35,7 @@ public class StationController {
         for (Station station : stations) {
             stationMap.put(station.getId(), station);
         }
+
     }
 
     public static Station getStationById(String id) {
@@ -94,11 +95,11 @@ public class StationController {
         Station station = stationMap.get(id);
         Timber.i(station.getName());
         int i = stations.indexOf(station);
-        Timber.i(i + "");
+        Timber.i("%s", i);
         if (++i == stations.size()) {
             i = 0;
         }
-        Timber.i(i + "");
+        Timber.i("%s", i);
         return stations.get(i);
     }
 
@@ -106,11 +107,11 @@ public class StationController {
         Station station = stationMap.get(id);
         Timber.i(station.getName());
         int i = stations.indexOf(station);
-        Timber.i(i + "");
+        Timber.i("%s", i);
         if (--i < 0) {
             i = stations.size() - 1;
         }
-        Timber.i(i + "");
+        Timber.i("%s", i);
         return stations.get(i);
     }
 }
