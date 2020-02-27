@@ -9,7 +9,6 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.ccyoong.radiomalaysia.PlayerHandler;
@@ -24,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
 //    NavController nc;
 
+    private ViewPager viewPager;
     private PlayerHandler playerHandler;
     private MediaSessionCompat mSession;
     private PlayerControlView playerControlView;
@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton playButton;
     private ImageButton pauseButton;
     private String lastMediaId = "melody";
-
     private ImageView exoIcon;
 
     @Override
@@ -49,12 +48,12 @@ public class MainActivity extends AppCompatActivity {
         exoIcon = findViewById(R.id.cuz_exo_icon);
 
         TabsPagerAdapter tabsPagerAdapter = new TabsPagerAdapter(this, getSupportFragmentManager());
-        final ViewPager viewPager = findViewById(R.id.view_pager);
+        viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(tabsPagerAdapter);
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
 
-        tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
+        /*tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 super.onTabSelected(tab);
@@ -64,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
             }
-        });
+        });*/
 
 
         playerControlView = findViewById(R.id.player_control_view);
@@ -135,6 +134,11 @@ public class MainActivity extends AppCompatActivity {
         changeExoIcon(lastMediaId);
     }
 
+
+    public boolean isPlaying() {
+        return mSession.isActive();
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -150,5 +154,6 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         playerHandler.releasePlayer();
     }
+
 
 }
