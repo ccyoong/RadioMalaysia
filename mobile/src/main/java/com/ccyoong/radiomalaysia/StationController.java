@@ -22,7 +22,7 @@ public class StationController {
 
     static {
 
-        stations.add(new Station("988", "988", "友声有色", "https://starrfm.rastream.com/starrfm-988"));
+        stations.add(new Station("988", "988", "友声有色", "https://18573.live.streamtheworld.com/988_FMAAC.aac"));
         stations.add(new Station("melody", "Melody", "心聆听, 新体会", "https://astro3.rastream.com/melody"));
         stations.add(new Station("myfm", "My Fm", "MY 好玩!", "https://astro1.rastream.com/myfm"));
         stations.add(new Station("flyfm", "Fly Fm", "Malaysia's Hottest Music", "https://mediaprima.rastream.com/mediaprima-flyfm"));
